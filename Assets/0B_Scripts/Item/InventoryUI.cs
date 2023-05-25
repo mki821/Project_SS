@@ -41,6 +41,8 @@ public class InventoryUI : MonoBehaviour
         {
             activeInventory = !activeInventory;
             inventoryPanel.SetActive(activeInventory);
+            if (activeInventory) Time.timeScale = 0;
+            else Time.timeScale = 1;    
         }
     }
 

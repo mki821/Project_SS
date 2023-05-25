@@ -39,7 +39,7 @@ public class CameraManager : MonoBehaviour
                     yield return new WaitUntil(() => Input.GetMouseButtonUp(0) || _gun.Ammo < 1);
                     break;
                 case 2:
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.3f);//
                     break;
             }
 
