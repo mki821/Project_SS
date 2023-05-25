@@ -235,6 +235,7 @@ public class Gun : MonoBehaviour
         while (true)
         {
             yield return new WaitUntil(() => Input.GetMouseButton(1) && !_reloading);
+            yield return new WaitForSeconds(Time.deltaTime);
 
             StartCoroutine(Reloading());
         }
@@ -259,15 +260,18 @@ public class Gun : MonoBehaviour
 
     private void MouseMove()
     {
-        transform.rotation = Quaternion.Euler(0, 0, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg) + 90);
+        if(Time.timeScale != 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg) + 90);
 
-        if (transform.parent.position.x < _mousePos.x)
-        {
-            transform.parent.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        else if (transform.parent.position.x > _mousePos.x)
-        {
-            transform.parent.rotation = Quaternion.Euler(0, 180, 0);
+            if (transform.parent.position.x < _mousePos.x)
+            {
+                transform.parent.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (transform.parent.position.x > _mousePos.x)
+            {
+                transform.parent.rotation = Quaternion.Euler(0, 180, 0);
+            }
         }
     }
 

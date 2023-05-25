@@ -47,3 +47,6 @@ TagManager:
   - name: HpBar
     uniqueID: 3283566355
     locked: 0
+  - name: UI
+    uniqueID: 492935843
+    locked: 0

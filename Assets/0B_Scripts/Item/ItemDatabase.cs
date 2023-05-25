@@ -23,6 +23,5 @@ public class ItemDatabase : MonoBehaviour
     {
         GameObject go = Instantiate(fieldItemPrefab, vec, Quaternion.identity);
         go.GetComponent<FieldItems>().SetItem(itemDB[Random.Range(strVal, endVal + 1)]);
-        Debug.Log(go.GetComponent<FieldItems>().item.itemName);
     }
 }
