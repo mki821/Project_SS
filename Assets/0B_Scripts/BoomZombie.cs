@@ -3,30 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyController : MonoBehaviour
+public class BoomZombie : MonoBehaviour
 {
     [SerializeField]
     private float speed = 5;
     [SerializeField]
     private int maxHp;
     [SerializeField]
-    private int damage;
-    [SerializeField]
     private LayerMask player;
     [SerializeField]
     private GameObject itemPrefab;
+    [SerializeField]
+    private GameObject boomPrefab;
 
     private int _curHp;
-    private bool _isFreeze = true;
 
     private GameObject _player;
-    [SerializeField]
     private Image _hpGuage;
 
-    //삭제예정
-    [SerializeField]
+    //삭제?
     private SpriteRenderer _spriteRenderer;
-    Color color;
 
     private void Awake()
     {
@@ -34,41 +30,28 @@ public class EnemyController : MonoBehaviour
         _hpGuage = transform.Find("Canvas/Background/Fill").GetComponent<Image>();
         _curHp = maxHp;
 
-        StartCoroutine(Cooldown(1f));
-        StartCoroutine(Move());
+        _spriteRenderer = GetComponent<SpriteRenderer>();
 
-        color = _spriteRenderer.color;
+        StartCoroutine(Move());
     }
 
     private IEnumerator Move()
     {
+        yield return new WaitForSeconds(1f);
+
         while (true)
         {
-            if (!_isFreeze)
+            Vector2 dir = _player.transform.position - transform.position;
+
+            transform.position += (Vector3)dir.normalized * speed * Time.deltaTime;
+
+            if (Check(player).CompareTag("Player"))
             {
-                Vector2 dir = _player.transform.position - transform.position;
-
-                transform.position += (Vector3)dir.normalized * speed * Time.deltaTime;
-
-                if (Check(player).CompareTag("Player"))
-                {
-                    Debug.Log(Check(player));
-                    Check(player).GetComponent<PlayerStatus>().Damaged(damage);
-                    StartCoroutine(Cooldown(1f));
-                }
+                Die();
             }
 
             yield return new WaitForSeconds(Random.Range(Time.deltaTime * 0.5f, Time.deltaTime * 3));
         }
-    }
-
-    private IEnumerator Cooldown(float time)
-    {
-        _isFreeze = true;
-
-        yield return new WaitForSeconds(time);
-
-        _isFreeze = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -79,10 +62,10 @@ public class EnemyController : MonoBehaviour
             Destroy(collision.gameObject);
             _curHp -= damage;
             StartCoroutine(HitColor());
-            
+
             _hpGuage.fillAmount -= damage / (float)maxHp;
 
-            if(_curHp < 1)
+            if (_curHp < 1)
             {
                 Die();
             }
@@ -91,6 +74,8 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator HitColor()
     {
+        Color color = _spriteRenderer.color;
+
         _spriteRenderer.color = Color.white;
 
         yield return new WaitForSeconds(0.1f);
@@ -101,17 +86,18 @@ public class EnemyController : MonoBehaviour
     private void Die()
     {
         ItemDatabase.instance.MakeItem(transform.position, 0, 1);
+        Instantiate(boomPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
     protected Collider2D Check(LayerMask layer)
     {
-        return Physics2D.OverlapBox(transform.position, new Vector2(1.2f, 1.2f), layer);
+        return Physics2D.OverlapCircle(transform.position, 1.5f, layer);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, new Vector2(1.2f, 1.2f));
+        Gizmos.DrawWireSphere(transform.position, 1.5f);
     }
 }
