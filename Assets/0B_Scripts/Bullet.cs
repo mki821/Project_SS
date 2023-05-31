@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : PoolMono
 {
     public int bulletDamage = 3;
 
@@ -23,6 +23,11 @@ public class Bullet : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        Destroy(gameObject);
+        PoolManager.instance.Push(this);
+    }
+
+    public override void Init()
+    {
+        
     }
 }
