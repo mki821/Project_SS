@@ -22,18 +22,18 @@ public class CameraManager : MonoBehaviour
         _gun = GameObject.Find("Player/PlayerSprite/Gun").GetComponent<Gun>();
     }
 
-    public void CameraShake(float amplitude, int attackType)
+    public void CameraShake(float amplitude, int type)
     {
-        StartCoroutine(ShakeCam(amplitude, attackType));
+        StartCoroutine(ShakeCam(amplitude, type));
     }
 
-    IEnumerator ShakeCam(float amplitude, int attackType)
+    IEnumerator ShakeCam(float amplitude, int type)
     {
         if (cameraPerlin.m_AmplitudeGain <= 0 || cameraPerlin.m_FrequencyGain <= 0)
         {
             cameraPerlin.m_AmplitudeGain = amplitude;
 
-            switch (attackType)
+            switch (type)
             {
                 case 1:
                     yield return new WaitUntil(() => Input.GetMouseButtonUp(0) || _gun.Ammo < 1);

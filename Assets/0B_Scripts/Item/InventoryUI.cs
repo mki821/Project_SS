@@ -6,12 +6,20 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    public static InventoryUI instance = null;
+
     Inventory inven;
     public GameObject inventoryPanel;
     public bool activeInventory = false;
 
     public Slot[] slots;
     public Transform slotHolder;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+    }
 
     private void Start()
     {

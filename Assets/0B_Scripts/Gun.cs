@@ -135,7 +135,7 @@ public class Gun : MonoBehaviour
 
     private void GunChange()
     {
-        if (!_reloading)
+        if (!_reloading && !InventoryUI.instance.activeInventory)
         {
             float scroll = Input.GetAxis("Mouse ScrollWheel");
 
@@ -191,7 +191,7 @@ public class Gun : MonoBehaviour
         {
             case 1:
                 CameraManager.instance.CameraShake(rebound, 1);
-                Instantiate(bulletPrefab, _bulletSpawnPosition.position, Quaternion.Euler(0, 0, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg)));
+                PoolManager.instance.Pop("ARBullet", _bulletSpawnPosition.position, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg));
                 Instantiate(gunEffect, transform.Find("Square").position, Quaternion.Euler(0, 0, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg) - 90), transform);
                 TextSet();
                 ret = 0.1f;
@@ -202,7 +202,7 @@ public class Gun : MonoBehaviour
                 for(int i = 0; i < 5; i++)
                 {
                     //Instantiate(shotgunBulletPrefab, _bulletSpawnPosition.position, Quaternion.Euler(0, 0, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg + angle)));
-                    PoolManager.instance.Pop("Shotgun", _bulletSpawnPosition.position , - (Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg + angle));
+                    PoolManager.instance.Pop("ShotgunBullet", _bulletSpawnPosition.position, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg + angle));
                     angle += 5;
                 }
                 Instantiate(gunEffect, transform.Find("Square").position, Quaternion.Euler(0, 0, -(Mathf.Atan2(_v2.x, _v2.y) * Mathf.Rad2Deg) - 90), transform);

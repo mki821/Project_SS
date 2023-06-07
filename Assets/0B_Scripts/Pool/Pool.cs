@@ -30,10 +30,13 @@ public class Pool<T> where T : PoolMono
         {
             obj = GameObject.Instantiate(_prefab, pos, Quaternion.Euler(0, 0, angle),_parent);
             obj.gameObject.name = obj.gameObject.name.Replace("(Clone)", "");
+            Debug.Log(obj.name);
         }
         else
         {
             obj = _pool.Pop();
+            obj.transform.position = pos;
+            obj.transform.rotation = Quaternion.Euler(0, 0, angle);
             obj.gameObject.SetActive(true);
         }
 

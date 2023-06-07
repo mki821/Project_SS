@@ -10,7 +10,7 @@ public struct PoolingPair
 }
 
 [CreateAssetMenu(menuName = "SO/PoolList")]
-public class PoolingListSO : ScriptableObject
+public class PoolListSO : ScriptableObject
 {
-    public List<PoolingPair> Pools;
+    public List<PoolingPair> Pairs;
 }

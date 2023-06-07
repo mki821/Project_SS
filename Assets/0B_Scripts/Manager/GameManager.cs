@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private PoolingListSO _poolListSO;
+    private PoolListSO _poolListSO;
 
     private void Awake()
     {
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     {
         PoolManager.instance = new PoolManager(transform);
 
-        foreach (PoolingPair pair in _poolListSO.Pools)
+        foreach (PoolingPair pair in _poolListSO.Pairs)
         {
             PoolManager.instance.CreatePool(pair.Prefab, pair.Count);
         }

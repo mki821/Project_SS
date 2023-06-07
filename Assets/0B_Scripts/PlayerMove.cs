@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    public Vector3 dir;
+
     [SerializeField]
     private float speed;
 
@@ -12,7 +14,7 @@ public class PlayerMove : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
 
-        Vector3 dir = new Vector2(x, y);
+        dir = new Vector2(x, y);
 
         transform.position += dir.normalized * Time.deltaTime * speed;
     }
