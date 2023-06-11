@@ -28,9 +28,8 @@ public class Pool<T> where T : PoolMono
 
         if(_pool.Count <= 0)
         {
-            obj = GameObject.Instantiate(_prefab, pos, Quaternion.Euler(0, 0, angle),_parent);
+            obj = GameObject.Instantiate(_prefab, pos, Quaternion.Euler(0, 0, angle), _parent);
             obj.gameObject.name = obj.gameObject.name.Replace("(Clone)", "");
-            Debug.Log(obj.name);
         }
         else
         {

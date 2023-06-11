@@ -335,14 +335,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 9
   maxHp: 6
+  damage: 6
+  dropPer: 0.5
   player:
     serializedVersion: 2
     m_Bits: 8
   enemy:
     serializedVersion: 2
     m_Bits: 128
-  itemPrefab: {fileID: 5821058878062248639, guid: a6f4c0d7446387e4185665a8879a684b, type: 3}
   boomPrefab: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
+  _player: {fileID: 0}
 --- !u!1 &8365461312175566616
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ TagManager:
   - PlayerBullet
   - FieldItem
   - FxTemporaire
+  - Swing
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - PlayerBullet
   - Enemy
   - MinimapIcon
-  - 
+  - Music
   - 
   - 
   - 

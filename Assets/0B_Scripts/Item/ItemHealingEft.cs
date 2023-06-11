@@ -9,7 +9,7 @@ public class ItemHealingEft : ItemEffect
 
     public override bool ExecuteRole()
     {
-        Debug.Log(healingPoint);
+        GameManager.instance.player.GetComponent<PlayerStatus>().AddHp(healingPoint);
         return true;
     }
 }

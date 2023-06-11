@@ -327,13 +327,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  maxHp: 30
-  damage: 3
+  maxHp: 14
+  damage: 5
+  dropPer: 0.3
   player:
     serializedVersion: 2
     m_Bits: 8
-  itemPrefab: {fileID: 5821058878062248639, guid: a6f4c0d7446387e4185665a8879a684b, type: 3}
-  _hpGuage: {fileID: 0}
+  dieEffectPrefab: {fileID: 100000, guid: 663b7169606d8b247aed0c8b9f6baa64, type: 3}
+  _player: {fileID: 0}
   _spriteRenderer: {fileID: 1039083579769119670}
 --- !u!1 &1039083579970338793
 GameObject:

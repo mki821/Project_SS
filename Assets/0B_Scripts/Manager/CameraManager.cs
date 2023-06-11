@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Cinemachine;
 
 public class CameraManager : MonoBehaviour
@@ -14,12 +15,24 @@ public class CameraManager : MonoBehaviour
     private void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            DontDestroyOnLoad(this);
+        }
         else
             Destroy(gameObject);
-        vCam = FindObjectOfType<CinemachineVirtualCamera>();
-        cameraPerlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        _gun = GameObject.Find("Player/PlayerSprite/Gun").GetComponent<Gun>();
+
+        SceneManager.sceneLoaded += LoadedSceneEvent;
+    }
+
+    private void LoadedSceneEvent(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "SampleScene")
+        {
+            vCam = FindObjectOfType<CinemachineVirtualCamera>();
+            cameraPerlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            _gun = GameObject.Find("Player/PlayerSprite/Gun").GetComponent<Gun>();
+        }
     }
 
     public void CameraShake(float amplitude, int type)

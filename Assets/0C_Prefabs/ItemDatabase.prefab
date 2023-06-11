@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2034621791436114183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2034621791436114297}
+  - component: {fileID: 2034621791436114296}
+  m_Layer: 0
+  m_Name: ItemDatabase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2034621791436114297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034621791436114183}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2034621791436114296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034621791436114183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e4eb49cb8b09f4387c64ced2010bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDB:
+  - itemType: 1
+    itemName: ARMagazine
+    itemInfo: AR Managine +1
+    itemImage: {fileID: -2413806693520163455, guid: de51a67404b96154395bb40d24ded8e8, type: 3}
+    efts:
+    - {fileID: 11400000, guid: c0aabdbc4c6e7574196eb1918243ec0a, type: 2}
+  - itemType: 1
+    itemName: ShotgunManagine
+    itemInfo: Shotgun Managine +1
+    itemImage: {fileID: 7482667652216324306, guid: dd031a62b12e37d4b843f22600d7bb36, type: 3}
+    efts:
+    - {fileID: 11400000, guid: 8c0ce1b92eb8e2f4797a9ebebf234316, type: 2}
+  - itemType: 1
+    itemName: ARLevelUp
+    itemInfo: ARLevelUp
+    itemImage: {fileID: 7482667652216324306, guid: 9cd2e3e18f0f9e24e9b3b7dd2590cc3f, type: 3}
+    efts:
+    - {fileID: 11400000, guid: 83a99985f464ea841a8f485efb9cc828, type: 2}
+  - itemType: 1
+    itemName: ShotgunLevelUp
+    itemInfo: ShotgunLevelUp
+    itemImage: {fileID: 7482667652216324306, guid: 9cd2e3e18f0f9e24e9b3b7dd2590cc3f, type: 3}
+    efts:
+    - {fileID: 11400000, guid: 941fe8a75f4fe7841a676527ac992774, type: 2}
+  - itemType: 1
+    itemName: Bandage
+    itemInfo: Hp +10
+    itemImage: {fileID: -251039856, guid: 6ed6202b83d50ee41badb94b9568d907, type: 3}
+    efts:
+    - {fileID: 11400000, guid: 9d54cf1f7b8fb5a4bad95a6664527279, type: 2}
+  - itemType: 1
+    itemName: First-Aid Kit
+    itemInfo: Hp +30
+    itemImage: {fileID: 1486493798, guid: 6ed6202b83d50ee41badb94b9568d907, type: 3}
+    efts:
+    - {fileID: 11400000, guid: 75416d7f20019a246a192d756ad088b5, type: 2}
+  fieldItemPrefab: {fileID: 3394723502846267719, guid: d39943a1572d05443becbad2811e93e8, type: 3}

@@ -17,15 +17,15 @@ public class Zombie : PoolMono, IEnemy
     [SerializeField]
     private LayerMask player;
     [SerializeField]
-    private GameObject itemPrefab;
+    private GameObject dieEffectPrefab;
 
     private int _curHp;
     private bool _isFreeze = true;
     private bool _isAttack = false;
     private bool _dropItem = false;
 
-    private GameObject _player;
     [SerializeField]
+    private GameObject _player;
     private Image _hpGuage;
     private BoxCollider2D _boxCollider;
 
@@ -37,7 +37,6 @@ public class Zombie : PoolMono, IEnemy
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
-        _player = GameObject.FindWithTag("Player");
         _hpGuage = transform.Find("Canvas/Background/Fill").GetComponent<Image>();
         _curHp = maxHp;
 
@@ -46,7 +45,7 @@ public class Zombie : PoolMono, IEnemy
 
     private IEnumerator Move()
     {
-        while (true)
+        while (!GameManager.instance.gameEnd)
         {
             if (!_isFreeze && !_isAttack)
             {
@@ -54,10 +53,16 @@ public class Zombie : PoolMono, IEnemy
 
                 transform.position += (Vector3)dir.normalized * speed * Time.deltaTime;
 
-                if (Check(player).CompareTag("Player") && !_isAttack)
+                if (!_isAttack)
                 {
-                    AttackAnim();
-                    StartCoroutine(Cooldown(2f));
+                    foreach (var item in Check(player))
+                    {
+                        if (item?.name == "Player")
+                        {
+                            AttackAnim();
+                            StartCoroutine(Cooldown(2f));
+                        }
+                    }
                 }
             }
 
@@ -74,7 +79,19 @@ public class Zombie : PoolMono, IEnemy
 
         seq.Append(transform.DOMove(transform.position + (-dir * 0.5f), 0.3f).SetEase(Ease.Linear));
         seq.Append(transform.DOMove(transform.position + (dir * 0.8f), 0.5f).SetEase(Ease.InCubic));
+        seq.AppendCallback(() => Attack());
         seq.AppendCallback(() => _isAttack = false);
+    }
+
+    private void Attack()
+    {
+        foreach (var item in Check(player))
+        {
+            if (item?.name == "Player")
+            {
+                item?.GetComponent<PlayerStatus>().Damaged(damage);
+            }
+        }
     }
 
     private IEnumerator Cooldown(float time)
@@ -86,7 +103,7 @@ public class Zombie : PoolMono, IEnemy
         _isFreeze = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("PlayerBullet"))
         {
@@ -94,6 +111,12 @@ public class Zombie : PoolMono, IEnemy
             Destroy(collision.gameObject);
 
             Damaged(damage);
+            transform.DOMove(transform.position + (-(_player.transform.position - transform.position).normalized * 0.2f), 0.07f).SetEase(Ease.Linear);
+        }
+        else if (collision.transform.CompareTag("Swing"))
+        {
+            Damaged(collision.transform.parent.GetComponent<SwingAttack>().damage);
+            transform.DOMove(transform.position + (-(_player.transform.position - transform.position).normalized * 0.7f), 0.3f).SetEase(Ease.OutExpo);
         }
     }
 
@@ -112,12 +135,21 @@ public class Zombie : PoolMono, IEnemy
         {
             float rnd = Random.Range(0, 1f);
 
-            if (rnd < dropPer)
+            if(rnd < 0.05f)
             {
                 _dropItem = true;
-                ItemDatabase.instance.MakeItem(transform.position, 0, 1);
+                ItemDatabase.instance.MakeItem(transform.position, 4, 5);
+            }
+            else if (rnd < dropPer)
+            {
+                _dropItem = true;
+                ItemDatabase.instance.MakeItem(transform.position, 0, 3);
             }
         }
+        Instantiate(dieEffectPrefab, transform.position, Quaternion.identity);
+        AudioManager.instance.PlaySound("Zombie");
+        UIManager.instance.Score += 100;
+        EnemyAutoSpawn.instance.Count--;
         Destroy(gameObject);
     }
 
@@ -134,9 +166,9 @@ public class Zombie : PoolMono, IEnemy
         }
     }
 
-    protected Collider2D Check(LayerMask layer)
+    protected Collider2D[] Check(LayerMask layer)
     {
-        return Physics2D.OverlapBox(transform.position, new Vector2(1.2f, 1.2f), layer);
+        return Physics2D.OverlapBoxAll(transform.position, new Vector2(1.2f, 1.2f), layer);
     }
 
     private void OnDrawGizmos()
@@ -147,6 +179,11 @@ public class Zombie : PoolMono, IEnemy
 
     public override void Init()
     {
+        StopAllCoroutines();
+
+        Debug.Log(GameManager.instance.player);
+        _player = GameManager.instance.player;
+
         _boxCollider.enabled = true;
 
         StartCoroutine(Cooldown(0.5f));

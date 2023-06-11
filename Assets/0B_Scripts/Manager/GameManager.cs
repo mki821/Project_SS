@@ -4,21 +4,39 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    private PoolListSO _poolListSO;
+    public static GameManager instance = null;
+
+    public bool gameEnd = false;
+    public GameObject player;
 
     private void Awake()
     {
-        CreatePoolManager();
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    private void CreatePoolManager()
+    private void Start()
     {
-        PoolManager.instance = new PoolManager(transform);
+        SetResolution();
+    }
 
-        foreach (PoolingPair pair in _poolListSO.Pairs)
-        {
-            PoolManager.instance.CreatePool(pair.Prefab, pair.Count);
-        }
+    public void SetResolution()
+    {
+        int setWidth = 1920;
+        int setHeight = 1080;
+
+        Screen.SetResolution(setWidth, setHeight, true);
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
     }
 }

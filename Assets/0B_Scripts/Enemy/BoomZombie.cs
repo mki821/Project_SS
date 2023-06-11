@@ -10,19 +10,20 @@ public class BoomZombie : PoolMono, IEnemy
     [SerializeField]
     private int maxHp;
     [SerializeField]
+    private int damage;
+    [SerializeField]
     private float dropPer = 0.1f;
     [SerializeField]
     private LayerMask player;
     [SerializeField]
     private LayerMask enemy;
     [SerializeField]
-    private GameObject itemPrefab;
-    [SerializeField]
     private GameObject boomPrefab;
 
     private int _curHp;
     private bool _dropItem = false;
 
+    [SerializeField]
     private GameObject _player;
     private Image _hpGuage;
     private BoxCollider2D _boxCollider;
@@ -33,7 +34,6 @@ public class BoomZombie : PoolMono, IEnemy
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
-        _player = GameObject.FindWithTag("Player");
         _hpGuage = transform.Find("Canvas/Background/Fill").GetComponent<Image>();
         _curHp = maxHp;
 
@@ -44,7 +44,7 @@ public class BoomZombie : PoolMono, IEnemy
     {
         yield return new WaitForSeconds(0.5f);
 
-        while (true)
+        while (!GameManager.instance.gameEnd)
         {
             Vector2 dir = _player.transform.position - transform.position;
 
@@ -59,7 +59,7 @@ public class BoomZombie : PoolMono, IEnemy
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("PlayerBullet"))
         {
@@ -86,16 +86,25 @@ public class BoomZombie : PoolMono, IEnemy
         _boxCollider.enabled = false;
         float rnd = Random.Range(0, 1f);
 
-        if (!_dropItem && rnd < dropPer)
+        if (rnd < 0.05f)
+        {
+            _dropItem = true;
+            ItemDatabase.instance.MakeItem(transform.position, 4, 5);
+        }
+        else if (!_dropItem && rnd < dropPer)
         {
             _dropItem = true;
             ItemDatabase.instance.MakeItem(transform.position, 0, 1);
         }
+
         CameraManager.instance.CameraShake(10, 2);
         Instantiate(boomPrefab, transform.position, Quaternion.identity);
-        PlayerCheck()?.GetComponent<PlayerStatus>().Damaged(8);
+        AudioManager.instance.PlaySound("Explosion");
+        UIManager.instance.Score += 150;
+        PlayerCheck()?.GetComponent<PlayerStatus>().Damaged(damage);
         foreach (var item in Check(enemy))
-            item?.GetComponent<IEnemy>().Damaged(20);
+            item?.GetComponent<IEnemy>().Damaged(damage * 2);
+        EnemyAutoSpawn.instance.Count--;
         Destroy(gameObject);
     }
 
@@ -127,6 +136,10 @@ public class BoomZombie : PoolMono, IEnemy
 
     public override void Init()
     {
+        StopAllCoroutines();
+
+        _player = GameManager.instance.player;
+
         _boxCollider.enabled = true;
 
         StartCoroutine(Move());

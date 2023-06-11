@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager
 {
     public static PoolManager instance;
 
-    private Dictionary<string, Pool<PoolMono>> _pools = new Dictionary<string, Pool<PoolMono>>();
+    public Dictionary<string, Pool<PoolMono>> _pools = new Dictionary<string, Pool<PoolMono>>();
 
     private Transform _parent;
 
