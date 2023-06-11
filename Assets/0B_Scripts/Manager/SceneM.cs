@@ -19,4 +19,9 @@ public class SceneM : MonoBehaviour
 
         SceneManager.LoadScene(sceneName);
     }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
 }
